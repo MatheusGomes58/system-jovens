@@ -36,6 +36,7 @@
   border-radius: 30px;
   margin-right: 10%;
   margin-left: 10%;
+  margin-bottom: 120px;
 }
 
 .missionsCard input {
@@ -60,7 +61,7 @@
   height: auto;
   border-radius: 30px;
   font-weight: bold;
-  margin-top: 10%;
+  margin-top: 1%;
 }
 
 .functionLabel {
@@ -77,4 +78,9 @@
   height: 50px;
   background-color: white;
   border-radius: 50%;
+  border: none;
+}
+
+.profileImage{
+  margin-top: 160px;
 }

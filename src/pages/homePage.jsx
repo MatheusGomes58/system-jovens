@@ -82,7 +82,7 @@ function HomePage() {
     }, []);
 
 
-    function editUserAcess(){
+    function editUserAcess() {
         localStorage.removeItem('editUser');
         navigate('/profile');
     }
@@ -90,7 +90,7 @@ function HomePage() {
     return (
         <div className="homePage">
             <div className='containerHome'>
-                <div className="profileImage" style={{ position: 'relative', display: 'inline-block' }}>
+                <div className="profileImage"  style={{ position: 'relative', display: 'inline-block' }}>
                     <img src={user.img ? user.img : LogoJA} alt="Profile" className="profileImg" />
                     <button className='configButton' onClick={editUserAcess}>
                         <i className="fas fa-cog"></i>

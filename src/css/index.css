@@ -16,10 +16,9 @@ body {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   text-align: center;
-  overflow-x: hidden;
   color: white;
   font-size: 15px;
-  overflow: hidden;    
-  overflow-y: auto;
   background-color: black;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
