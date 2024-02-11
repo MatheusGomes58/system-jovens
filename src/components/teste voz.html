@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Narrador Virtual em Português</title>
+</head>
+<body onload="speakText()">
+
+  <h1>Narrador Virtual em Português</h1>
+  <textarea id="textToSpeak" rows="4" cols="50" placeholder="Digite algo para ser lido em voz alta..."></textarea>
+  <button onclick="speakText()">Falar</button>
+
+  <script>
+    function speakText() {
+      const textToSpeak = document.getElementById('textToSpeak').value;
+
+      if ('speechSynthesis' in window) {
+        const synthesis = window.speechSynthesis;
+
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+
+        utterance.lang = 'pt-BR';
+
+        // Tente escolher uma voz masculina, se disponível
+        const voices = synthesis.getVoices();
+        const maleVoice = voices.find(voice => voice.lang === 'pt-BR' && voice.name.includes('Masculino'));
+
+        if (maleVoice) {
+          utterance.voice = maleVoice;
+        }
+
+        synthesis.speak(utterance);
+      } else {
+        alert('Seu navegador não suporta a API de fala.');
+      }
+    }
+
+    // Chamando a função speakText() ao carregar a página
+    speakText();
+  </script>
+
+</body>
+</html>

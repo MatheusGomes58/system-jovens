@@ -1,0 +1,38 @@
+.schedulePage {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    overflow-x: auto;
+}
+
+
+.monthBanner {
+    color: white;
+    background-color: #173f74;
+    width: 100%;
+    padding: 1%;
+}
+
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: black;
+    text-align: center;
+}

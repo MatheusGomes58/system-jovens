@@ -1,0 +1,70 @@
+.homePage {
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.LogoJA {
+  width: 190px;
+  height: 190px;
+}
+
+.containerHome {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 5%;
+}
+
+.profileImg {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.missionsCard {
+  background-color: #0314af;
+  color: white;
+  padding: 20px;
+  border-radius: 30px;
+  margin-right: 10%;
+  margin-left: 10%;
+}
+
+.missionsCard input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.inputText {
+  border: none;
+  border-bottom: 2px solid white;
+  outline: none;
+  min-width: 300px;
+  background: none;
+  color: white;
+}
+
+.buttonMissions {
+  width: 100%;
+  background-color: #fecc0d;
+  font-size: 16px;
+  color: #0314af;
+  height: auto;
+  border-radius: 30px;
+  font-weight: bold;
+  margin-top: 10%;
+}
+
+.functionLabel {
+  width: 100%;
+  color: #fecc0d;
+  font-weight: bold;
+}
