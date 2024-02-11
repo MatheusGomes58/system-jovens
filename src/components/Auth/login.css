@@ -38,6 +38,7 @@
 }
 
 .boxButton{
+    margin-top: 30px;
     min-height: 50px;
     display: flex;
     justify-content: center;
