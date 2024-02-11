@@ -6,6 +6,7 @@ import MenuOptions from '../components/menu/menu';
 import '../css/App.css';
 import SchedulePage from './schedulePage';
 import TeamPage from './teamPage';
+import Profile from './profilePage';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function AppContent() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/schedule" element={<SchedulePage />} />
         <Route path="/team" element={<TeamPage />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/" element={<AutenticationPage />} />
       </Routes>
       {location.pathname !== "/" && <MenuOptions />}

@@ -32,7 +32,7 @@ function Auth() {
                 const userDocSnapshot = userQuerySnapshot.docs[0];
 
                 // Atualizar o status do usuário no Firestore
-                await userDocSnapshot.ref.update({ online: true });
+                await userDocSnapshot.ref.update({ online: false });
                 console.log('Status do usuário atualizado para online');
 
                 // Redirecionar para a página inicial após a validação do usuário

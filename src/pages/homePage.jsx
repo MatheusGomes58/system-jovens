@@ -12,6 +12,7 @@ function HomePage() {
         userValidation();
     }, []);
 
+
     async function userValidation() {
         const currentUser = auth.currentUser;
         if (!currentUser) {
@@ -45,7 +46,7 @@ function HomePage() {
                 const userDocSnapshot = userQuerySnapshot.docs[0];
 
                 // Atualizar o status do usuário no Firestore
-                await userDocSnapshot.ref.update({ online: false });
+                await userDocSnapshot.ref.update({ online: true });
                 console.log('Status do usuário atualizado para online');
             } else {
                 console.log('Documento do usuário não encontrado');
@@ -54,6 +55,7 @@ function HomePage() {
             console.error('Erro ao salvar o status do usuário no Firestore:', error);
         }
     }
+
 
 
 
@@ -80,40 +82,33 @@ function HomePage() {
     }, []);
 
 
-    const handleImageClick = () => {
-        const confirmChange = window.confirm("Deseja trocar a foto de perfil?");
-        if (confirmChange) {
-            // Abrir o gerenciador de arquivos
-            document.getElementById('fileInput').click();
-        }
-    };
-
-    const handleFileChange = async (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const storageRef = storage.ref();
-            const fileRef = storageRef.child(file.name);
-            await fileRef.put(file);
-            const fileUrl = await fileRef.getDownloadURL();
-            await db.collection('users').doc(user.id).update({
-                img: fileUrl
-            });
-        }
-    };
+    function editUserAcess(){
+        localStorage.removeItem('editUser');
+        navigate('/profile');
+    }
 
     return (
         <div className="homePage">
             <div className='containerHome'>
-                <div className="profileImage" onClick={handleImageClick}>
+                <div className="profileImage" style={{ position: 'relative', display: 'inline-block' }}>
                     <img src={user.img ? user.img : LogoJA} alt="Profile" className="profileImg" />
-                    <h2 className='functionLabel'>{user.function ? user.function : 'Cargo Indefinido'}</h2>
+                    <button className='configButton' onClick={editUserAcess}>
+                        <i className="fas fa-cog"></i>
+                    </button>
                 </div>
-                <input id="fileInput" type="file" onChange={handleFileChange} style={{ display: 'none' }} />
+
+                <h2 className='functionLabel'>{user.function ? user.function : 'Cargo Indefinido'}</h2>
+                <div className="userLevelFlag">
+                    <span className="userLevel">{user.level ? user.level : 'Nível Indefinido'}</span>
+                </div>
+
             </div>
             <div className='containerHome'>
                 <div className="missionsCard">
-                    <input className='inputText' type="text" placeholder="Nome:" value={user.name ? user.name : 'Nome Indefinido'} disabled />
-                    <input className='inputText' type="text" placeholder="Equipe:" value={user.team ? user.team : 'Time Indefinido'} disabled />
+                    <input className='inputText' type="text" placeholder="Nome:" value={user.name ? user.name : 'Nome Indefinido'} readOnly />
+                    <input className='inputText' type="text" placeholder="Idade:" value={user.age ? user.age : 'Idade Indefinida'} readOnly />
+                    <input className='inputText' type="text" placeholder="Email:" value={user.email ? user.email : 'Email Indefinido'} readOnly />
+                    <input className='inputText' type="text" placeholder="Equipe:" value={user.team ? user.team : 'Time Indefinido'} readOnly />
                     <button className='buttonMissions'>
                         <h2>MINHAS MISSÕES</h2>
                     </button>

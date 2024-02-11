@@ -5,9 +5,10 @@ import { db, auth } from '../components/firebase/firebase';
 import '../css/homePage.css';
 import LogoJA from '../img/logo.png';
 
-function HomePage() {
+function TeamPage() {
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
+    const [user, setUser] = useState({});
 
     useEffect(() => {
         userValidation();
@@ -39,18 +40,10 @@ function HomePage() {
         }
 
         try {
-            // Realizar uma consulta para encontrar o documento com o email do usuário
             const userQuerySnapshot = await db.collection('users').where('email', '==', userEmail).get();
-
             if (!userQuerySnapshot.empty) {
-                // Pegar o primeiro documento encontrado
                 const userDocSnapshot = userQuerySnapshot.docs[0];
-
-                // Atualizar o status do usuário no Firestore
-                await userDocSnapshot.ref.update({ online: false });
-                console.log('Status do usuário atualizado para online');
-            } else {
-                console.log('Documento do usuário não encontrado');
+                await userDocSnapshot.ref.update({ online: true });
             }
         } catch (error) {
             console.error('Erro ao salvar o status do usuário no Firestore:', error);
@@ -62,27 +55,35 @@ function HomePage() {
         try {
             const usersCollection = await db.collection('users').where('status', '==', true).get();
             const usersData = usersCollection.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    
-            // Recuperar os usuários autenticados
-            const onlineUsersByEmail = {};
-            await auth.listUsers().then(users => {
-                users.forEach(user => {
-                    onlineUsersByEmail[user.email] = true;
-                });
-            });
-    
-            const usersWithOnlineStatus = usersData.map(user => {
-                const isOnline = onlineUsersByEmail[user.email] || false;
-                return { ...user, isOnline };
-            });
-    
-            setUsers(usersWithOnlineStatus);
+
+            setUsers(usersData);
         } catch (error) {
             console.error('Error fetching users: ', error);
         }
     }
-    
-    
+
+    useEffect(() => {
+        const getUserFromFirestore = () => {
+            const currentUser = auth.currentUser;
+            const userEmail = currentUser.email;
+            return db.collection('users')
+                .where('email', '==', userEmail)
+                .onSnapshot(snapshot => {
+                    if (!snapshot.empty) {
+                        const userData = snapshot.docs[0].data();
+                        const userId = snapshot.docs[0].id;
+                        setUser({ id: userId, ...userData }); // Adicionando o ID do documento aos dados do usuário
+                    }
+                });
+        };
+
+        const unsubscribe = getUserFromFirestore();
+
+        return () => {
+            unsubscribe();
+        };
+    }, []);
+
 
     return (
         <div className="homePage">
@@ -91,10 +92,13 @@ function HomePage() {
                 <h2 className='functionLabel'>Membros</h2>
             </div>
             <div className='containerHome'>
-                <Members users={users} />
+                <Members
+                    users={users}
+                    isAdmin={user.team == 'ADM'? true : false}
+                />
             </div>
         </div>
     );
 }
 
-export default HomePage;
+export default TeamPage;

@@ -12,14 +12,16 @@
 
 .btnCircle {
     border-radius: 100%;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     background-color: #ffd400;
     color: black;
     border: none;
     cursor: pointer;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
-    margin: 40px;
+    margin-bottom: 40px;
+    margin-right: 1%;
+    margin-left: 1%;
 }
 
 .btnAdd:hover {
