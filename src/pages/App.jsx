@@ -7,6 +7,7 @@ import '../css/App.css';
 import SchedulePage from './schedulePage';
 import TeamPage from './teamPage';
 import Profile from './profilePage';
+import FogotPassword from './fogotPassword';
 
 function App() {
   return (
@@ -26,9 +27,10 @@ function AppContent() {
         <Route path="/schedule" element={<SchedulePage />} />
         <Route path="/team" element={<TeamPage />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/fogotPassword" element={<FogotPassword />} />
         <Route path="/" element={<AutenticationPage />} />
       </Routes>
-      {location.pathname !== "/" && <MenuOptions />}
+      {(location.pathname !== "/" && location.pathname !== "/fogotPassword") && <MenuOptions />}
     </React.Fragment>
   );
 }

@@ -15,9 +15,6 @@ function LoginForm() {
   };
 
   const handleLogin = async () => {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
     // Autenticação com e-mail e senha
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -33,6 +30,10 @@ function LoginForm() {
         console.error('Erro no login:', errorCode, errorMessage);
         // Adicione aqui a manipulação de erros
       });
+  };
+
+  const handleForgotPassword = () => {
+    history('/fogotPassword');
   };
 
   return (
@@ -60,7 +61,7 @@ function LoginForm() {
           {passwordVisible ? <i className="fas fa-eye-slash"></i> : <i className="fas fa-eye"></i>}
         </span>
       </div>
-      <a className="resetPass">Esqueceu sua senha?</a>
+      <a className="resetPass" onClick={handleForgotPassword}>Esqueceu sua senha?</a>
       <div className="boxButton">
         <button className="btnAuth" onClick={handleLogin}>Log In</button>
       </div>

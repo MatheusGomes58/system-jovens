@@ -5,7 +5,8 @@
     width: 100vw;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center;  
+    background-color: rgba(0, 0, 0, 0.6);  
 }
 
 .btnCircle {
@@ -16,7 +17,8 @@
     color: black;
     border: none;
     cursor: pointer;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 8px 16px rgba(0, 10, 20, 0.6);
+    margin-top: 1%;
     margin-bottom: 40px;
     margin-right: 1%;
     margin-left: 1%;

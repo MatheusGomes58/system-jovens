@@ -21,7 +21,9 @@
 table {
     border-collapse: collapse;
     width: 100%;
+    max-width: 100%;
     margin-bottom: 120px;
+    overflow-x: auto;
 }
 
 th,
@@ -29,7 +31,7 @@ td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
-    text-align: center;
+    word-break: break-word; 
 }
 
 th {

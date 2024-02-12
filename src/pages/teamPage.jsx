@@ -50,17 +50,21 @@ function TeamPage() {
         }
     }
 
-
     async function fetchUsers() {
+        const currentUser = auth.currentUser;
+        const userEmail = currentUser.email;
         try {
             const usersCollection = await db.collection('users').where('status', '==', true).get();
-            const usersData = usersCollection.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
+            
+            const usersData = usersCollection.docs
+                .map(doc => ({ id: doc.id, ...doc.data() }))
+                .filter(user => user.email !== userEmail);
+    
             setUsers(usersData);
         } catch (error) {
             console.error('Error fetching users: ', error);
         }
-    }
+    }    
 
     useEffect(() => {
         const getUserFromFirestore = () => {
