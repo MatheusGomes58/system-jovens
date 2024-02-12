@@ -7,6 +7,7 @@ import '../css/App.css';
 import SchedulePage from './schedulePage';
 import TeamPage from './teamPage';
 import Profile from './profilePage';
+import ChatPage from './chatPage';
 import FogotPassword from './fogotPassword';
 
 function App() {
@@ -27,6 +28,7 @@ function AppContent() {
         <Route path="/schedule" element={<SchedulePage />} />
         <Route path="/team" element={<TeamPage />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/chat" element={<ChatPage />} />
         <Route path="/fogotPassword" element={<FogotPassword />} />
         <Route path="/" element={<AutenticationPage />} />
       </Routes>

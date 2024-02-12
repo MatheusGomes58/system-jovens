@@ -1,5 +1,4 @@
 .userList {
-    background-color: #0314af;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,6 +7,14 @@
     padding: 1%;
     border-radius: 50px;
     margin: 1%;
+}
+
+.userActive{
+    background-color: #0314af;
+}
+
+.userInactive{
+    background-color: #2e2e2e;
 }
 
 .profilesImg {

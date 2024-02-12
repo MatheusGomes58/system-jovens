@@ -3,19 +3,36 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { db, auth, storage } from '../components/firebase/firebase';
 import '../css/homePage.css';
 import LogoJA from '../img/userUnknow.png';
+import Switch from '../components/switch/switch'
 
 function ProfilePage() {
     const [user, setUser] = useState({});
+    const [admin, setAdmin] = useState(false);
     const [editableFields, setEditableFields] = useState({
         name: '',
         age: '',
-        team: ''
+        team: '',
+        status: false,
+        leader: false,
+        admin: false,
     });
+    const [teams, setTeams] = useState([]); // Estado para armazenar os times
     const navigate = useNavigate();
 
     useEffect(() => {
         userValidation();
+        fetchTeams(); // Chama a função para recuperar os times do Firestore
     }, []);
+
+    async function fetchTeams() {
+        try {
+            const teamsSnapshot = await db.collection('teams').get();
+            const teamsList = teamsSnapshot.docs.map(doc => doc.data().name); // Extrai apenas o nome dos times
+            setTeams(teamsList);
+        } catch (error) {
+            console.error('Erro ao recuperar times do Firestore:', error);
+        }
+    }
 
     async function userValidation() {
         const currentUser = auth.currentUser;
@@ -41,6 +58,9 @@ function ProfilePage() {
             return;
         }
 
+        setAdmin(localStorage.getItem('admin'));
+        console.log(admin)
+
         try {
             const userEdit = localStorage.getItem('editUser');
             let userQuerySnapshot;
@@ -49,8 +69,8 @@ function ProfilePage() {
             } else {
                 userQuerySnapshot = await db.collection('users').where('email', '==', userEmail).get();
             }
-            
-            if (!userQuerySnapshot.empty) {           
+
+            if (!userQuerySnapshot.empty) {
                 userQuerySnapshot.forEach(doc => {
                     const userData = doc.data(); // Aqui acessamos os dados de cada documento
                     setUser({ id: doc.id, ...userData });
@@ -59,9 +79,12 @@ function ProfilePage() {
                         age: userData.age || '',
                         team: userData.team || '',
                         email: userData.email || '',
+                        status: userData.status || false,
+                        leader: userData.leader || false,
+                        admin: userData.admin || false
                     });
                 });
-            } 
+            }
         } catch (error) {
         }
     }
@@ -91,12 +114,15 @@ function ProfilePage() {
             await db.collection('users').doc(user.id).update({
                 name: editableFields.name,
                 age: editableFields.age,
-                team: editableFields.team
+                team: editableFields.team,
+                status: editableFields.status,
+                leader: editableFields.leader,
+                admin: editableFields.admin
             });
             console.log('Informações do usuário atualizadas com sucesso.');
 
             localStorage.removeItem('editUser');
-            navigate(-1); 
+            navigate(-1);
         } catch (error) {
             console.error('Erro ao atualizar informações do usuário no Firestore:', error);
         }
@@ -138,14 +164,41 @@ function ProfilePage() {
                         value={editableFields.email}
                         readOnly
                     />
-                    <input
-                        className='inputText'
-                        type="text"
-                        placeholder="team:"
-                        value={editableFields.team}
-                        onChange={(e) => setEditableFields({ ...editableFields, team: e.target.team })}
-                        readOnly
-                    />
+                    <div className='selectContainer'>
+                        <select
+                            value={editableFields.team}
+                            onChange={(e) => setEditableFields({ ...editableFields, team: e.target.value })}
+                        >
+                            <option value="">Selecione um time</option>
+                            {teams.map((team, index) => (
+                                <option key={index} value={team}>{team}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {admin && (
+                        <div className='row'>
+                            <Switch
+                                id={'statusUser'}
+                                label={'Status'}
+                                status={editableFields.status}
+                                onToggle={() => setEditableFields({ ...editableFields, status: !editableFields.status })}
+                            />
+                            <Switch
+                                id={'leaderUser'}
+                                label={'Líder de Equipe'}
+                                status={editableFields.leader}
+                                onToggle={() => setEditableFields({ ...editableFields, leader: !editableFields.leader })}
+                            />
+                            <Switch
+                                id={'adminUser'}
+                                label={'Administrador'}
+                                status={editableFields.admin}
+                                onToggle={() => setEditableFields({ ...editableFields, admin: !editableFields.admin })}
+                            />
+                        </div>
+                    )}
+
                     <button className='buttonMissions' onClick={handleEditButtonClick}>
                         <h2>Editar</h2>
                     </button>

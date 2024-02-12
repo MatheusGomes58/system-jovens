@@ -11,38 +11,26 @@ function Auth() {
 
     async function userValidation() {
         const currentUser = auth.currentUser;
+        if (!currentUser) {
+            navigate('/');
+            return;
+        }
+
+        const userEmail = currentUser.email;
+
         const authTime = localStorage.getItem('authTime');
+        if (!authTime) {
+            navigate('/');
+            return;
+        }
+
         const currentTime = new Date().getTime();
         const timeElapsed = currentTime - parseInt(authTime, 10);
 
         const threeHoursInMs = 3 * 60 * 60 * 1000;
-        if (timeElapsed < threeHoursInMs) {
-            // Se o tempo decorrido desde a última autenticação for maior que 3 horas, redirecione para a página de login
-            navigate('/home');
-            return;
-        }
-
-        try {
-            // Realizar uma consulta para encontrar o documento com o email do usuário
-            const userQuerySnapshot = await db.collection('users').where('email', '==', currentUser.email).get();
-
-            if (!userQuerySnapshot.empty) {
-                // Pegar o primeiro documento encontrado
-                const userDocSnapshot = userQuerySnapshot.docs[0];
-
-                // Atualizar o status do usuário no Firestore
-                await userDocSnapshot.ref.update({ online: false });
-                console.log('Status do usuário atualizado para online');
-
-                // Redirecionar para a página inicial após a validação do usuário
-                navigate('/home');
-            } else {
-                console.log('Documento do usuário não encontrado');
-                navigate('/');
-            }
-        } catch (error) {
-            console.error('Erro ao salvar o status do usuário no Firestore:', error);
+        if (timeElapsed > threeHoursInMs) {
             navigate('/');
+            return;
         }
     }
 

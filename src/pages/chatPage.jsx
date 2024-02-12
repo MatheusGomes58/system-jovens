@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import Members from '../components/members/members';
+import Chat from '../components/chat/chat'; 
 import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../components/firebase/firebase';
 import '../css/homePage.css';
 import LogoJA from '../img/logo.png';
 
-function TeamPage() {
+function ChatPage() {
     const navigate = useNavigate();
-    const [users, setUsers] = useState([]);
     const [user, setUser] = useState({});
 
     useEffect(() => {
         getUserFromFirestore();
         userValidation();
-        fetchUsers();
     }, []);
 
     async function userValidation() {
@@ -40,26 +38,10 @@ function TeamPage() {
             return;
         }
     }
-
-    async function fetchUsers() {
-        const currentUser = auth.currentUser;
-        const userEmail = currentUser.email;
-        try {
-            const usersCollection = await db.collection('users').get();
-
-            const usersData = usersCollection.docs
-                .map(doc => ({ id: doc.id, ...doc.data() }))
-                .filter(user => user.email !== userEmail);
-
-            setUsers(usersData);
-        } catch (error) {
-            console.error('Error fetching users: ', error);
-        }
-    }
+    const currentUser = auth.currentUser;
+    const userEmail = currentUser.email;
 
     const getUserFromFirestore = () => {
-        const currentUser = auth.currentUser;
-        const userEmail = currentUser.email;
         return db.collection('users')
             .where('email', '==', userEmail)
             .onSnapshot(snapshot => {
@@ -78,13 +60,10 @@ function TeamPage() {
                 <h2 className='functionLabel'>Membros</h2>
             </div>
             <div className='containerHome'>
-                <Members
-                    users={!user.admin ? users.filter(user => user.status === true) : users}
-                    isAdmin={user.admin}
-                />
+                <Chat email={userEmail}/>
             </div>
         </div>
     );
 }
 
-export default TeamPage;
+export default ChatPage;

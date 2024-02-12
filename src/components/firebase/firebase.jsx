@@ -2,6 +2,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
+import 'firebase/compat/database';
 
 const firebaseConfig1 = {
   apiKey: "AIzaSyD71aajbuopH-VZ9gmo5poOFyp1Dhevw2s",
@@ -24,11 +25,14 @@ const firebaseConfig = {
 };
 
 const app = firebase.initializeApp(firebaseConfig, 'app');
-const db = app.firestore();
-const storage = app.storage();
 const auth = firebase.initializeApp(firebaseConfig).auth();
+const db = app.firestore();
+const realTimeDB = app.database();
+const storage = app.storage();
 
 const app2 = firebase.initializeApp(firebaseConfig1, 'app1');
 const db2 = app2.firestore();
 
-export { db, db2, storage, app, auth };
+
+export { db, db2, storage, app, auth, realTimeDB };
+

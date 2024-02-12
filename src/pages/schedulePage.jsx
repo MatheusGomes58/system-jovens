@@ -35,24 +35,6 @@ const SchedulePage = () => {
             navigate('/');
             return;
         }
-
-        try {
-            // Realizar uma consulta para encontrar o documento com o email do usuário
-            const userQuerySnapshot = await db.collection('users').where('email', '==', userEmail).get();
-
-            if (!userQuerySnapshot.empty) {
-                // Pegar o primeiro documento encontrado
-                const userDocSnapshot = userQuerySnapshot.docs[0];
-
-                // Atualizar o status do usuário no Firestore
-                await userDocSnapshot.ref.update({ online: false });
-                console.log('Status do usuário atualizado para online');
-            } else {
-                console.log('Documento do usuário não encontrado');
-            }
-        } catch (error) {
-            console.error('Erro ao salvar o status do usuário no Firestore:', error);
-        }
     }
 
     useEffect(() => {

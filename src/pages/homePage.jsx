@@ -23,7 +23,7 @@ function HomePage() {
         const userEmail = currentUser.email;
 
         const authTime = localStorage.getItem('authTime');
-        if (!authTime || !userEmail) {
+        if (!authTime) {
             navigate('/');
             return;
         }
@@ -35,24 +35,6 @@ function HomePage() {
         if (timeElapsed > threeHoursInMs) {
             navigate('/');
             return;
-        }
-
-        try {
-            // Realizar uma consulta para encontrar o documento com o email do usuário
-            const userQuerySnapshot = await db.collection('users').where('email', '==', userEmail).get();
-
-            if (!userQuerySnapshot.empty) {
-                // Pegar o primeiro documento encontrado
-                const userDocSnapshot = userQuerySnapshot.docs[0];
-
-                // Atualizar o status do usuário no Firestore
-                await userDocSnapshot.ref.update({ online: true });
-                console.log('Status do usuário atualizado para online');
-            } else {
-                console.log('Documento do usuário não encontrado');
-            }
-        } catch (error) {
-            console.error('Erro ao salvar o status do usuário no Firestore:', error);
         }
     }
 
@@ -81,6 +63,9 @@ function HomePage() {
         };
     }, []);
 
+    if(user.admin){
+        localStorage.setItem('admin', user.admin)
+    }
 
     function editUserAcess() {
         localStorage.removeItem('editUser');
