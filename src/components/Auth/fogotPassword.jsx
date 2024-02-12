@@ -19,6 +19,7 @@ function ForgotPasswordForm() {
 
     return (
         <div id="ForgotPasswordForm">
+            <a className='resetPass'>Para recuperar a senha através do Email de Redefinição de Senha, informe o email cadastrado e pressione o botão</a>
             <input
                 className="inputLogin"
                 type="email"
@@ -29,7 +30,7 @@ function ForgotPasswordForm() {
                 required
             />
             <div className="boxButton">
-                <button className="btnAuth" onClick={handleForgotPassword}>Enviar E-mail de Redefinição de Senha</button>
+                <button className="btnAuth" onClick={handleForgotPassword}>Enviar E-mail</button>
             </div>
         </div>
     );

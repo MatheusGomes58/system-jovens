@@ -5,16 +5,27 @@ import './menu.css'
 function MenuOptions() {
     const history = useNavigate();
 
-    function acessHome(){
-        history('/home'); 
+    function acessHome() {
+        history('/home');
     }
 
-    function acessTeam(){
-        history('/team'); 
+    function acessTeam() {
+        history('/team');
     }
 
-    function acessSchedule(){
-        history('/schedule'); 
+    function acessSchedule() {
+        history('/schedule');
+    }
+
+    function acessCard() {
+        const url = 'https://sg.sdasystems.org/liderja/br/';
+        window.open(url, '_blank');
+    }
+
+
+    function logout() {
+        localStorage.clear();
+        history('/');
     }
 
     return (
@@ -27,6 +38,12 @@ function MenuOptions() {
             </button>
             <button className='btnCircle' onClick={acessSchedule}>
                 <i className="fas fa-calendar-alt"></i>
+            </button>
+            <button className='btnCircle' onClick={acessCard}>
+                <i className="fas fa-chalkboard"></i>
+            </button>
+            <button className='btnCircle' onClick={logout}>
+                <i className="fas fa-sign-out-alt"></i>
             </button>
         </div>
     );

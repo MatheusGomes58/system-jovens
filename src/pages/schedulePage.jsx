@@ -135,7 +135,6 @@ const SchedulePage = () => {
                 <thead>
                     <tr>
                         <th>Data</th>
-                        <th>Horário</th>
                         <th>Responsável</th>
                         <th>Descrição</th>
                         <th>Local</th>
@@ -146,7 +145,6 @@ const SchedulePage = () => {
                         events[month].map(event => (
                             <tr key={event.id}>
                                 <td className='limited-column'>{month}-{event.day} {event.endDay ? ' á ' + event.endDay : ''}</td>
-                                <td className='limited-column'>{event.startTime} á {event.endTime}</td>
                                 <td className='limited-column'>{event.responsible}</td>
                                 <td className='limited-column'>{event.description}</td>
                                 <td className='limited-column'>{event.location}</td>

@@ -65,13 +65,13 @@ function Auth() {
                             className={`switch ${activeTab === 'login' ? 'active' : ''}`}
                             onClick={() => handleTabSwitch('login')}
                         >
-                            Log In
+                            Logar
                         </div>
                         <div
                             className={`switch ${activeTab === 'register' ? 'active' : ''}`}
                             onClick={() => handleTabSwitch('register')}
                         >
-                            Criar conta
+                            Registrar
                         </div>
                     </div>
                     {activeTab === 'login' ? <LoginForm /> : <RegisterForm />}

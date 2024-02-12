@@ -54,17 +54,23 @@ function TeamPage() {
         const currentUser = auth.currentUser;
         const userEmail = currentUser.email;
         try {
-            const usersCollection = await db.collection('users').where('status', '==', true).get();
-            
+            var usersCollection;
+
+            if (user.admin) {
+                usersCollection = await db.collection('users').where('status', '==', true).get();
+            }else{
+                usersCollection = await db.collection('users').get();
+            }
+
             const usersData = usersCollection.docs
                 .map(doc => ({ id: doc.id, ...doc.data() }))
                 .filter(user => user.email !== userEmail);
-    
+
             setUsers(usersData);
         } catch (error) {
             console.error('Error fetching users: ', error);
         }
-    }    
+    }
 
     useEffect(() => {
         const getUserFromFirestore = () => {
@@ -98,7 +104,7 @@ function TeamPage() {
             <div className='containerHome'>
                 <Members
                     users={users}
-                    isAdmin={user.team == 'ADM'? true : false}
+                    isAdmin={user.admin}
                 />
             </div>
         </div>

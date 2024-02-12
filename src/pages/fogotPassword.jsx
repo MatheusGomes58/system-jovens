@@ -1,10 +1,8 @@
 import '../css/autenticationPage.css';
-import LoginForm from '../components/Auth/login'
-import RegisterForm from '../components/Auth/register'
 import { db, auth } from '../components/firebase/firebase';
 import { useNavigate } from 'react-router-dom';
 import LogoJA from '../img/logo.png';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ForgotPasswordForm from '../components/Auth/fogotPassword';
 
 function Auth() {
@@ -63,16 +61,16 @@ function Auth() {
                 <div className="container">
                     <div className="sliderLogin">
                         <div
-                            className='switch'
+                            className={`switch ${activeTab === 'login' ? 'active' : ''}`}
                             onClick={() => handleTabSwitch('login')}
                         >
-                            Log In
+                            Logar
                         </div>
                         <div
-                            className='switch'
+                            className={`switch ${activeTab === 'register' ? 'active' : ''}`}
                             onClick={() => handleTabSwitch('register')}
                         >
-                            Criar conta
+                            Registrar
                         </div>
                     </div>
                     <ForgotPasswordForm />
