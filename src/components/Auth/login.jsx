@@ -20,6 +20,7 @@ function LoginForm() {
       .then((userCredential) => {
         const user = userCredential.user;
         localStorage.setItem('authTime', new Date().getTime().toString());
+        localStorage.setItem('email',email);
         console.log('Usuário logado:', user);
         history('/home');
       })

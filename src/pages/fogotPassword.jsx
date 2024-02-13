@@ -9,31 +9,6 @@ function Auth() {
     const [activeTab, setActiveTab] = useState('login');
     const navigate = useNavigate();
 
-    async function userValidation() {
-        const currentUser = auth.currentUser;
-        if (!currentUser) {
-            navigate('/');
-            return;
-        }
-
-        const userEmail = currentUser.email;
-
-        const authTime = localStorage.getItem('authTime');
-        if (!authTime) {
-            navigate('/');
-            return;
-        }
-
-        const currentTime = new Date().getTime();
-        const timeElapsed = currentTime - parseInt(authTime, 10);
-
-        const threeHoursInMs = 3 * 60 * 60 * 1000;
-        if (timeElapsed > threeHoursInMs) {
-            navigate('/');
-            return;
-        }
-    }
-
 
 
     const handleTabSwitch = (tab) => {

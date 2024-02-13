@@ -10,15 +10,12 @@ function Auth() {
     const [activeTab, setActiveTab] = useState('login');
     const navigate = useNavigate();
 
+    useEffect(() => {
+        userValidation();
+    }, []);
+
+
     async function userValidation() {
-        const currentUser = auth.currentUser;
-        if (!currentUser) {
-            navigate('/');
-            return;
-        }
-
-        const userEmail = currentUser.email;
-
         const authTime = localStorage.getItem('authTime');
         if (!authTime) {
             navigate('/');
@@ -34,6 +31,7 @@ function Auth() {
             return;
         }
     }
+
 
 
 

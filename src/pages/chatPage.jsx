@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Chat from '../components/chat/chat'; 
+import Chat from '../components/chat/chat';
 import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../components/firebase/firebase';
 import '../css/homePage.css';
@@ -8,21 +8,25 @@ import LogoJA from '../img/logo.png';
 function ChatPage() {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
+    const [userChat, setUserChat] = useState({});
 
     useEffect(() => {
         getUserFromFirestore();
         userValidation();
     }, []);
 
-    async function userValidation() {
-        const currentUser = auth.currentUser;
-        if (!currentUser) {
-            navigate('/');
-            return;
+    const storedUser = localStorage.getItem('chat');
+
+    useEffect(() => {
+        try {
+            const parsedUser = JSON.parse(storedUser);
+            setUserChat(parsedUser ? parsedUser : {});
+        } catch (error) {
+            console.error('Erro ao analisar o usuário do localStorage:', error);
         }
+    }, [storedUser]);
 
-        const userEmail = currentUser.email;
-
+    async function userValidation() {
         const authTime = localStorage.getItem('authTime');
         if (!authTime) {
             navigate('/');
@@ -38,8 +42,8 @@ function ChatPage() {
             return;
         }
     }
-    const currentUser = auth.currentUser;
-    const userEmail = currentUser.email;
+
+    const userEmail = localStorage.getItem('email');
 
     const getUserFromFirestore = () => {
         return db.collection('users')
@@ -60,7 +64,10 @@ function ChatPage() {
                 <h2 className='functionLabel'>Membros</h2>
             </div>
             <div className='containerHome'>
-                <Chat email={userEmail}/>
+                <Chat
+                    email={userEmail}
+                    user={userChat}
+                />
             </div>
         </div>
     );

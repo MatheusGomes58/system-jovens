@@ -14,14 +14,6 @@ function HomePage() {
 
 
     async function userValidation() {
-        const currentUser = auth.currentUser;
-        if (!currentUser) {
-            navigate('/');
-            return;
-        }
-
-        const userEmail = currentUser.email;
-
         const authTime = localStorage.getItem('authTime');
         if (!authTime) {
             navigate('/');
@@ -40,11 +32,9 @@ function HomePage() {
 
 
 
-
     useEffect(() => {
         const getUserFromFirestore = () => {
-            const currentUser = auth.currentUser;
-            const userEmail = currentUser.email;
+            const userEmail = localStorage.getItem('email');
             return db.collection('users')
                 .where('email', '==', userEmail)
                 .onSnapshot(snapshot => {
@@ -63,7 +53,7 @@ function HomePage() {
         };
     }, []);
 
-    if(user.admin){
+    if (user.admin) {
         localStorage.setItem('admin', user.admin)
     }
 
@@ -75,7 +65,7 @@ function HomePage() {
     return (
         <div className="homePage">
             <div className='containerHome'>
-                <div className="profileImage"  style={{ position: 'relative', display: 'inline-block' }}>
+                <div className="profileImage" style={{ position: 'relative', display: 'inline-block' }}>
                     <img src={user.img ? user.img : LogoJA} alt="Profile" className="profileImg" />
                     <button className='configButton' onClick={editUserAcess}>
                         <i className="fas fa-cog"></i>

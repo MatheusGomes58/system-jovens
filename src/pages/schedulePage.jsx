@@ -13,14 +13,6 @@ const SchedulePage = () => {
 
 
     async function userValidation() {
-        const currentUser = auth.currentUser;
-        if (!currentUser) {
-            navigate('/');
-            return;
-        }
-
-        const userEmail = currentUser.email;
-
         const authTime = localStorage.getItem('authTime');
         if (!authTime) {
             navigate('/');

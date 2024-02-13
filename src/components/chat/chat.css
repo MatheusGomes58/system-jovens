@@ -8,17 +8,20 @@
 
 .chat-messages {
     flex: 1;
-    overflow-y: auto;
+    overflow-y: auto; /* Adicionando uma barra de rolagem vertical */
     padding: 10px;
-    max-height: 410px;
-    min-height: 410px;
     background-color: white;
     border-radius: 30px;
+    margin-right: 10%;
+    margin-left: 10%;
+    max-height: 400px; 
+    min-height: 400px; 
     display: flex;
+    flex-direction: column;
     justify-content: end;
-    align-items: end;
 }
 
+/* Adicionando as pseudo-classes do WebKit com prefixos */
 .chat-messages::-webkit-scrollbar {
     width: 8px;
 }
@@ -33,13 +36,13 @@
 }
 
 
+
 .message {
     margin-bottom: 10px;
     padding: 8px;
     border-radius: 8px;
     background-color: #f0f0f0;
     max-width: 70%;
-    /* Limita a largura da mensagem */
 }
 
 .message strong {
@@ -48,43 +51,45 @@
 }
 
 .message .timestamp {
-    color: #777;
+    width: 100%;
+    margin-top: 1%;
+    color: #ffffff;
     font-size: 12px;
+    display: flex;
+    justify-content: end;
 }
 
 .message.sent {
     align-self: flex-end;
     background-color: #007bff;
-    /* Altera a cor de fundo para mensagens enviadas */
     color: #fff;
-    /* Altera a cor do texto para mensagens enviadas */
     border-radius: 20px 20px 0 20px;
-    /* Adiciona borda arredondada apenas no canto inferior esquerdo */
     transform: skew(10deg);
-    /* Inclina o canto para a esquerda */
 }
 
 .message.sent .message-content {
     transform: skew(-10deg);
-    /* Inclina o canto para a esquerda */
-
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
 }
+
 
 .message.received {
     align-self: flex-end;
-    background-color: #0314af;
+    background-color: #797979;
     color: #fff;
-    /* Altera a cor do texto para mensagens enviadas */
     border-radius: 20px 20px 20px 0px;
-    /* Adiciona borda arredondada apenas no canto inferior esquerdo */
     transform: skew(-10deg);
-    /* Inclina o canto para a esquerda */
 }
 
 .message.received .message-content {
     transform: skew(10deg);
-    /* Inclina o canto para a esquerda */
-
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
 }
 
 .input-container {
@@ -127,21 +132,17 @@
 }
 
 .headerChat {
-    position: absolute;
     top: 0;
-    width: 110%;
+    right: 0;
+    left: 0;
+    position: absolute;
     background-color: #0314af;
     border-radius: 30px;
-    border: none;
     z-index: 1;
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: row;
     box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.562);
     padding: 1%;
-    left: 50%;
-    transform: translateX(-50%);
 }
 
 

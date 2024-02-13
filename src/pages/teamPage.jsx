@@ -17,14 +17,6 @@ function TeamPage() {
     }, []);
 
     async function userValidation() {
-        const currentUser = auth.currentUser;
-        if (!currentUser) {
-            navigate('/');
-            return;
-        }
-
-        const userEmail = currentUser.email;
-
         const authTime = localStorage.getItem('authTime');
         if (!authTime) {
             navigate('/');
@@ -42,8 +34,7 @@ function TeamPage() {
     }
 
     async function fetchUsers() {
-        const currentUser = auth.currentUser;
-        const userEmail = currentUser.email;
+        const userEmail = localStorage.getItem('email');
         try {
             const usersCollection = await db.collection('users').get();
 
@@ -58,8 +49,7 @@ function TeamPage() {
     }
 
     const getUserFromFirestore = () => {
-        const currentUser = auth.currentUser;
-        const userEmail = currentUser.email;
+        const userEmail = localStorage.getItem('email');
         return db.collection('users')
             .where('email', '==', userEmail)
             .onSnapshot(snapshot => {

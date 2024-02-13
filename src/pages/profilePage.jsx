@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { db, auth, storage } from '../components/firebase/firebase';
 import '../css/homePage.css';
 import LogoJA from '../img/userUnknow.png';
-import Switch from '../components/switch/switch'
+import Switch from '../components/switch/switch';
 
 function ProfilePage() {
     const [user, setUser] = useState({});
@@ -16,18 +16,19 @@ function ProfilePage() {
         leader: false,
         admin: false,
     });
-    const [teams, setTeams] = useState([]); // Estado para armazenar os times
+    const [teams, setTeams] = useState([]);
+    const [isLoading, setIsLoading] = useState(false); // Estado para controlar o carregamento
     const navigate = useNavigate();
 
     useEffect(() => {
         userValidation();
-        fetchTeams(); // Chama a função para recuperar os times do Firestore
+        fetchTeams();
     }, []);
 
     async function fetchTeams() {
         try {
             const teamsSnapshot = await db.collection('teams').get();
-            const teamsList = teamsSnapshot.docs.map(doc => doc.data().name); // Extrai apenas o nome dos times
+            const teamsList = teamsSnapshot.docs.map(doc => doc.data().name);
             setTeams(teamsList);
         } catch (error) {
             console.error('Erro ao recuperar times do Firestore:', error);
@@ -35,16 +36,8 @@ function ProfilePage() {
     }
 
     async function userValidation() {
-        const currentUser = auth.currentUser;
-        if (!currentUser) {
-            navigate('/');
-            return;
-        }
-
-        const userEmail = currentUser.email;
-
         const authTime = localStorage.getItem('authTime');
-        if (!authTime || !userEmail) {
+        if (!authTime) {
             navigate('/');
             return;
         }
@@ -58,8 +51,9 @@ function ProfilePage() {
             return;
         }
 
+        const userEmail = localStorage.getItem('email');
+
         setAdmin(localStorage.getItem('admin'));
-        console.log(admin)
 
         try {
             const userEdit = localStorage.getItem('editUser');
@@ -72,7 +66,7 @@ function ProfilePage() {
 
             if (!userQuerySnapshot.empty) {
                 userQuerySnapshot.forEach(doc => {
-                    const userData = doc.data(); // Aqui acessamos os dados de cada documento
+                    const userData = doc.data();
                     setUser({ id: doc.id, ...userData });
                     setEditableFields({
                         name: userData.name || '',
@@ -99,6 +93,7 @@ function ProfilePage() {
     const handleFileChange = async (event) => {
         const file = event.target.files[0];
         if (file) {
+            setIsLoading(true); // Ativa o estado de carregamento
             const storageRef = storage.ref();
             const fileRef = storageRef.child(file.name);
             await fileRef.put(file);
@@ -106,6 +101,12 @@ function ProfilePage() {
             await db.collection('users').doc(user.id).update({
                 img: fileUrl
             });
+            setIsLoading(false); // Desativa o estado de carregamento após o upload
+            // Atualizar automaticamente a imagem após o upload
+            setUser(prevUser => ({
+                ...prevUser,
+                img: fileUrl
+            }));
         }
     };
 
@@ -137,6 +138,7 @@ function ProfilePage() {
                         <i className="fas fa-pencil-alt"></i>
                     </button>
                 </div>
+                {isLoading && <div className="loadingOverlay">Carregando...</div>}
                 <h2 className='functionLabel'>{user.function ? user.function : 'Cargo Indefinido'}</h2>
 
                 <input id="fileInput" type="file" onChange={handleFileChange} style={{ display: 'none' }} />
@@ -168,6 +170,7 @@ function ProfilePage() {
                         <select
                             value={editableFields.team}
                             onChange={(e) => setEditableFields({ ...editableFields, team: e.target.value })}
+                            disabled={admin ? false : true}
                         >
                             <option value="">Selecione um time</option>
                             {teams.map((team, index) => (
