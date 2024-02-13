@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { db, auth, storage } from '../components/firebase/firebase';
+import { db } from '../components/firebase/firebase';
+import Narrator from '../components/narrador/narrador';
 import '../css/homePage.css';
 import LogoJA from '../img/userUnknow.png';
 
@@ -62,6 +63,10 @@ function HomePage() {
         navigate('/profile');
     }
 
+    function acessMissionsPage() {
+        navigate('/missions');
+    }
+
     return (
         <div className="homePage">
             <div className='containerHome'>
@@ -73,10 +78,6 @@ function HomePage() {
                 </div>
 
                 <h2 className='functionLabel'>{user.function ? user.function : 'Cargo Indefinido'}</h2>
-                <div className="userLevelFlag">
-                    <span className="userLevel">{user.level ? user.level : 'Nível Indefinido'}</span>
-                </div>
-
             </div>
             <div className='containerHome'>
                 <div className="missionsCard">
@@ -84,7 +85,7 @@ function HomePage() {
                     <input className='inputText' type="text" placeholder="Idade:" value={user.age ? user.age : 'Idade Indefinida'} readOnly />
                     <input className='inputText' type="text" placeholder="Email:" value={user.email ? user.email : 'Email Indefinido'} readOnly />
                     <input className='inputText' type="text" placeholder="Equipe:" value={user.team ? user.team : 'Time Indefinido'} readOnly />
-                    <button className='buttonMissions'>
+                    <button className='buttonMissions' onClick={acessMissionsPage}>
                         <h2>MINHAS MISSÕES</h2>
                     </button>
                 </div>

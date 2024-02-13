@@ -30,6 +30,11 @@
   object-fit: cover;
 }
 
+.Img {
+  width: 150px;
+  height: 150px;
+}
+
 .missionsCard {
   background-color: #0314af;
   color: white;
@@ -67,12 +72,14 @@
   width: 100%;
   padding: 8px 0;
   font-size: 16px;
-  appearance: none; /* Remove o estilo padrão do select */
+  appearance: none;
+  /* Remove o estilo padrão do select */
   background-color: #0314af;
 }
 
 .selectContainer::after {
-  content: '\25BC'; /* Ícone de seta para baixo */
+  content: '\25BC';
+  /* Ícone de seta para baixo */
   position: absolute;
   top: 50%;
   right: 0;
@@ -92,6 +99,18 @@
   margin-top: 1%;
 }
 
+.button {
+  background-color: #0314af;
+  font-size: 16px;
+  color: white;
+  height: 80px;
+  font-size: 26px;
+  border-radius: 30px;
+  font-weight: bold;
+  margin-top: 1%;
+  border: none;
+}
+
 .functionLabel {
   width: 100%;
   color: #fecc0d;
@@ -109,15 +128,105 @@
   border: none;
 }
 
-.homePage{
+.homePage {
   margin-top: 5%;
-  margin-bottom: 120px;
+  margin-bottom: 130px;
 }
 
-.row{
+.row {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 100%;
+}
+
+.missionCard {
+  width: 80%;
+  margin-top: 20px;
+  background-color: #f0f0f0;
+  color: black;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 400px; 
+  min-height: 400px; 
+  overflow-y: auto; /* Adicionando uma barra de rolagem vertical */
+}
+
+
+/* Adicionando as pseudo-classes do WebKit com prefixos */
+.missionCard::-webkit-scrollbar {
+  width: 8px;
+}
+
+.missionCard::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.missionCard::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.missionCardHeader {
+  font-size: 24px;
+  padding: 1%;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #575757;
+}
+
+
+.missionCardBody {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 1%;
+}
+
+.missionCardContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 90%;
+
+}
+
+.missionCardStatus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 10%;
+  font-size: 30px;
+}
+
+.missionCardBody:hover {
+  background-color: #e0e0e0;
+}
+
+.missionCardBody h3 {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.missionCardBody p {
+  margin-bottom: 10px;
+}
+
+.missionCardStatus .fas.fa-check-circle {
+  color: green; 
+}
+
+.missionCardStatus .fas.fa-exclamation-circle {
+  color: red; 
+}
+
+.missionCardStatus .fas.fa-spinner {
+  color: yellow; 
+}
+
+.missionCardStatus .fas.fa-circle {
+  color: gray;
 }

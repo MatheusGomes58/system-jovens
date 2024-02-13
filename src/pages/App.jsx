@@ -9,6 +9,8 @@ import TeamPage from './teamPage';
 import Profile from './profilePage';
 import ChatPage from './chatPage';
 import FogotPassword from './fogotPassword';
+import MissionsPage from './missionsPage';
+import MissionsListPage from './missionsListPage';
 
 function App() {
   return (
@@ -29,7 +31,9 @@ function AppContent() {
         <Route path="/team" element={<TeamPage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/missions" element={<MissionsPage />} />
         <Route path="/fogotPassword" element={<FogotPassword />} />
+        <Route path="/missionslist" element={<MissionsListPage />} />
         <Route path="/" element={<AutenticationPage />} />
       </Routes>
       {(location.pathname !== "/" && location.pathname !== "/fogotPassword") && <MenuOptions />}

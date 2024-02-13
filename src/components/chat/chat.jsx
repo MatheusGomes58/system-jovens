@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { db, realTimeDB } from '../firebase/firebase';
+import { useNavigate } from 'react-router-dom';
 import LogoJA from '../../img/userUnknow.png';
 import './chat.css';
 
 const Chat = ({ email, user }) => {
+    const history = useNavigate();
     const [message, setMessage] = useState('');
     const [chatId, setChatId] = useState('');
     const [messages, setMessages] = useState([]);
     const [messagesRef, setMessagesRef] = useState(null); // Definir messagesRef como um estado
+
+    function returnPage() {
+        history('/team');
+    }
 
     useEffect(() => {
         setChatId('');
@@ -100,6 +106,9 @@ const Chat = ({ email, user }) => {
     return (
         <div className="chat-container" style={{ position: 'relative', display: 'inline-block' }}>
             <div className='headerChat'>
+                <button className="configsButton" onClick={returnPage}>
+                    <i className="fas fa-arrow-left"></i>
+                </button>
                 <div style={{ position: 'relative', display: 'inline-block' }}>
                     <img src={user.img ? user.img : LogoJA} alt="Profile" className="profilesImg" />
                 </div>
