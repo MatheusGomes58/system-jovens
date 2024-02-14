@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { db, storage } from '../components/firebase/firebase';
 import Slides from '../components/slideShow/slideShow';
 import ReportForm from '../components/report/report';
-import '../css/homePage.css';
+import '../css/missionPage.css';
 
 function MissionDetailsPage() {
     const [mission, setMission] = useState(null);
@@ -131,7 +131,9 @@ function MissionDetailsPage() {
             {!report && (
                 <div className='containerHome'>
                     <Slides images={images} />
-                    <ReportForm onSubmit={handleSubmitReport} addImage={handleImageChange} />
+                    <div className='missionsCard'>
+                        <ReportForm onSubmit={handleSubmitReport} addImage={handleImageChange} />
+                    </div>
                 </div>
             )}
         </div>

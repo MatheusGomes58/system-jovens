@@ -23,10 +23,10 @@ function ReportForm({ onSubmit, addImage }) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='report-form' onSubmit={handleSubmit}>
             <textarea value={reportText} onChange={handleTextChange} />
-            <input type="file" accept="image/*" multiple onChange={addImage} />
-            <button type="submit" disabled={formSubmitted}>Enviar Relatório</button>
+            <input className='inputText' type="file" accept="image/*" multiple onChange={addImage} />
+            <button className='inputText' type="submit" disabled={formSubmitted}>Enviar Relatório</button>
         </form>
     );
 }
