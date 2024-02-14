@@ -95,7 +95,7 @@ function ProfilePage() {
         if (file) {
             setIsLoading(true); // Ativa o estado de carregamento
             const storageRef = storage.ref();
-            const fileRef = storageRef.child(file.name);
+            const fileRef = storageRef.child(`users/${file.name}`);
             await fileRef.put(file);
             const fileUrl = await fileRef.getDownloadURL();
             await db.collection('users').doc(user.id).update({
@@ -202,7 +202,7 @@ function ProfilePage() {
                         </div>
                     )}
 
-                    <button className='buttonMissions' onClick={handleEditButtonClick}>
+                    <button className='buttonMissions' onClick={handleEditButtonClick} disabled={isLoading}>
                         <h2>Editar</h2>
                     </button>
                 </div>
