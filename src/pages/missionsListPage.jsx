@@ -76,7 +76,8 @@ function MissionsListPage() {
         localStorage.setItem('admin', user.admin)
     }
 
-    function handleMissionClick() {
+    function handleMissionClick(missonID) {
+        localStorage.setItem('missionId',missonID);
         navigate('/mission');
     }
 
@@ -91,21 +92,23 @@ function MissionsListPage() {
             <div className='containerHome'>
                 <div className='missionCard'>
                     <h2 className='missionCardHeader'>Missions</h2>
-                    {missions.map(mission => (
-                        <div key={mission.id} className="missionCardBody" onClick={handleMissionClick}>
-                            <div className='missionCardContent'>
-                                <h3>{mission.title}</h3>
-                                <p>{mission.description}</p>
+                    <div className='missionCardList'>
+                        {missions.map(mission => (
+                            <div key={mission.id} className="missionCardBody" onClick={() => handleMissionClick(mission.id)}>
+                                <div className='missionCardContent'>
+                                    <h3>{mission.title}</h3>
+                                    <p>{mission.description}</p>
+                                </div>
+                                <div className='missionCardStatus'>
+                                    {mission.status === 'completed' && <i className="fas fa-check-circle"></i>}
+                                    {mission.status === 'error' && <i className="fas fa-exclamation-circle"></i>}
+                                    {mission.status === 'in_progress' && <i className="fas fa-spinner"></i>}
+                                    {mission.status === 'not_started' && <i className="fas fa-circle"></i>}
+                                </div>
                             </div>
-                            <div className='missionCardStatus'>
-                                {mission.status === 'completed' && <i className="fas fa-check-circle"></i>}
-                                {mission.status === 'error' && <i className="fas fa-exclamation-circle"></i>}
-                                {mission.status === 'in_progress' && <i className="fas fa-spinner"></i>}
-                                {mission.status === 'not_started' && <i className="fas fa-circle"></i>}
-                            </div>
-                        </div>
-                    ))}
-
+                        ))}
+                    </div>
+                    <h2 className='missionCardFooter'>Missions</h2>
                 </div>
             </div>
         </div>

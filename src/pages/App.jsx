@@ -11,6 +11,7 @@ import ChatPage from './chatPage';
 import FogotPassword from './fogotPassword';
 import MissionsPage from './missionsPage';
 import MissionsListPage from './missionsListPage';
+import MissionPage from './missionPage';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function AppContent() {
         <Route path="/missions" element={<MissionsPage />} />
         <Route path="/fogotPassword" element={<FogotPassword />} />
         <Route path="/missionslist" element={<MissionsListPage />} />
+        <Route path="/mission" element={<MissionPage />} />
         <Route path="/" element={<AutenticationPage />} />
       </Routes>
       {(location.pathname !== "/" && location.pathname !== "/fogotPassword") && <MenuOptions />}
