@@ -12,13 +12,13 @@ const Slideshow = ({ images }) => {
         setCurrentSlide(currentSlide === images.length - 1 ? 0 : currentSlide + 1);
     };
 
-    console.log('entrei aqui')
-
     return (
         <div className="slideshow-container">
             <div className="slideshow">
                 <div className="slide-container">
-                    <img src={images[currentSlide]} alt={`Slide ${currentSlide}`} />
+                    {images && images.map((image, index) => (
+                        <img key={index} src={image} alt={`Slide ${index}`} style={{ display: index === currentSlide ? 'block' : 'none' }} />
+                    ))}
                 </div>
                 <button className="prev" onClick={handlePrevSlide}>&#10094;</button>
                 <button className="next" onClick={handleNextSlide}>&#10095;</button>

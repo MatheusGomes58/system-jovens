@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { db, auth, storage } from '../components/firebase/firebase';
-import '../css/homePage.css';
-import LogoJA from '../img/userUnknow.png';
+import UserUnknow from '../img/userUnknow.png';
 import Switch from '../components/switch/switch';
+import '../css/profilePage.css';
 
 function ProfilePage() {
     const [user, setUser] = useState({});
@@ -130,10 +130,10 @@ function ProfilePage() {
     };
 
     return (
-        <div className="homePage">
-            <div className='containerHome'>
+        <div className="ProfilePage">
+            <div className='containerProfile'>
                 <div className="profileImage" onClick={handleImageClick} style={{ position: 'relative', display: 'inline-block' }}>
-                    <img src={user.img ? user.img : LogoJA} alt="Profile" className="profileImg" />
+                    <img src={user.img ? user.img : UserUnknow} alt="Profile" className="profileImg" />
                     <button className='configButton'>
                         <i className="fas fa-pencil-alt"></i>
                     </button>
@@ -143,8 +143,15 @@ function ProfilePage() {
 
                 <input id="fileInput" type="file" onChange={handleFileChange} style={{ display: 'none' }} />
             </div>
-            <div className='containerHome'>
-                <div className="missionsCard">
+            <div className='containerProfile'>
+                <div className="profileCard">
+                    <input
+                        className='inputText'
+                        type="text"
+                        placeholder="Email:"
+                        value={editableFields.email}
+                        readOnly
+                    />
                     <input
                         className='inputText'
                         type="text"
@@ -158,13 +165,6 @@ function ProfilePage() {
                         placeholder="Idade:"
                         value={editableFields.age}
                         onChange={(e) => setEditableFields({ ...editableFields, age: e.target.value })}
-                    />
-                    <input
-                        className='inputText'
-                        type="text"
-                        placeholder="Email:"
-                        value={editableFields.email}
-                        readOnly
                     />
                     <div className='selectContainer'>
                         <select
@@ -180,7 +180,7 @@ function ProfilePage() {
                     </div>
 
                     {admin && (
-                        <div className='row'>
+                        <div>
                             <Switch
                                 id={'statusUser'}
                                 label={'Status'}

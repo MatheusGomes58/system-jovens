@@ -2,58 +2,76 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../components/firebase/firebase';
 import Narrator from '../components/narrador/narrador';
-import '../css/homePage.css';
+import '../css/missionsListPage.css';
 import LogoJA from '../img/userUnknow.png';
 
 function MissionsListPage() {
     const [user, setUser] = useState({});
     const [missions, setMissions] = useState([]);
+    const [mensager, setMensager] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
+        getMensagerFromFirestore();
         userValidation();
     }, []);
 
+    async function getMensagerFromFirestore() {
+        db.collection('mensagers').where('mensager', '==', 'missionsListPage')
+            .onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    const mensagerData = snapshot.docs[0].data();
+                    setMensager(mensagerData.text);
+                }
+            });
+    };
+
     useEffect(() => {
+        const userEmail = localStorage.getItem('email');
         const getUserFromFirestore = () => {
-            const userEmail = localStorage.getItem('email');
             return db.collection('users')
                 .where('email', '==', userEmail)
                 .onSnapshot(snapshot => {
                     if (!snapshot.empty) {
                         const userData = snapshot.docs[0].data();
                         const userId = snapshot.docs[0].id;
-                        setUser({ id: userId, ...userData }); // Adicionando o ID do documento aos dados do usuário
+                        setUser({ id: userId, ...userData });
                     }
                 });
         };
 
-        const unsubscribe = getUserFromFirestore();
-
-        return () => {
-            unsubscribe();
-        };
-    }, []);
-
-    useEffect(() => {
-        const getMissionsFromFirestore = () => {
+        function getMissionsFromFirestore() {
             return db.collection('missions')
-                .onSnapshot(snapshot => {
+                .where('email', 'array-contains', userEmail)
+                .onSnapshot(async missionSnapshot => {
                     const missionsData = [];
-                    snapshot.forEach(doc => {
+                    for (const doc of missionSnapshot.docs) {
                         const missionData = doc.data();
-                        missionsData.push({ id: doc.id, ...missionData });
-                    });
+                        const jsonMission = { id: doc.id, ...missionData };
+                        const reportSnapshot = await db.collection('reports')
+                            .where('missionId', '==', jsonMission.id)
+                            .where('email', '==', userEmail)
+                            .get();
+                        reportSnapshot.forEach(report => {
+                            const reportData = report.data();
+                            jsonMission.status = reportData.status;
+                        });
+                        missionsData.push(jsonMission);
+                    }
                     setMissions(missionsData);
                 });
-        };
+        }
 
-        const unsubscribe = getMissionsFromFirestore();
+
+        const unsubscribeUser = getUserFromFirestore();
+        const unsubscribeMissions = getMissionsFromFirestore();
 
         return () => {
-            unsubscribe();
+            unsubscribeUser();
+            unsubscribeMissions();
         };
     }, []);
+
 
     async function userValidation() {
         const authTime = localStorage.getItem('authTime');
@@ -77,19 +95,19 @@ function MissionsListPage() {
     }
 
     function handleMissionClick(missonID) {
-        localStorage.setItem('missionId',missonID);
+        localStorage.setItem('missionId', missonID);
         navigate('/mission');
     }
 
     return (
-        <div className="homePage">
-            <div className='containerHome'>
+        <div className="missionsListPage">
+            <div className='containerListMissions'>
                 <div className="profileImage" style={{ position: 'relative', display: 'inline-block' }}>
                     <img src={user.img ? user.img : LogoJA} alt="Profile" className="profileImg" />
                 </div>
                 <h2 className='functionLabel'>{user.function ? user.function : 'Cargo Indefinido'}</h2>
             </div>
-            <div className='containerHome'>
+            <div className='containerListMissions'>
                 <div className='missionCard'>
                     <h2 className='missionCardHeader'>Missions</h2>
                     <div className='missionCardList'>
@@ -101,9 +119,9 @@ function MissionsListPage() {
                                 </div>
                                 <div className='missionCardStatus'>
                                     {mission.status === 'completed' && <i className="fas fa-check-circle"></i>}
-                                    {mission.status === 'error' && <i className="fas fa-exclamation-circle"></i>}
-                                    {mission.status === 'in_progress' && <i className="fas fa-spinner"></i>}
-                                    {mission.status === 'not_started' && <i className="fas fa-circle"></i>}
+                                    {mission.status === 'error' && <i className="fas fa-times-circle text-danger"></i>}
+                                    {mission.status === 'in_progress' && <i className="fas fa-circle-notch"></i>}
+                                    {!mission.status && <i className="fas fa-bullseye"></i>}
                                 </div>
                             </div>
                         ))}

@@ -1,4 +1,4 @@
-.homePage {
+.ProfilePage {
   width: 100vw;
   height: 100vh;
   background-color: black;
@@ -10,7 +10,7 @@
   margin-bottom: 5%;
 }
 
-.containerHome {
+.containerProfile {
   margin-right: 10%;
   margin-left: 10%;
   display: flex;
@@ -25,6 +25,70 @@
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.profileCard {
+  background-color: #0314af;
+  color: white;
+  padding: 20px;
+  border-radius: 30px;
+  margin-right: 10%;
+  margin-left: 10%;
+}
+
+.profileCard input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.inputText {
+  border: none;
+  border-bottom: 2px solid white;
+  outline: none;
+  min-width: 300px;
+  background: none;
+  color: white;
+}
+
+.selectContainer {
+  position: relative;
+  width: 100%;
+}
+
+.selectContainer select {
+  border: none;
+  border-bottom: 2px solid white;
+  outline: none;
+  background: none;
+  color: white;
+  width: 100%;
+  padding: 8px 0;
+  font-size: 16px;
+  appearance: none;
+  /* Remove o estilo padrão do select */
+  background-color: #0314af;
+}
+
+.selectContainer::after {
+  content: '\25BC';
+  /* Ícone de seta para baixo */
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+
+.buttonMissions {
+  width: 100%;
+  background-color: #fecc0d;
+  font-size: 16px;
+  color: #0314af;
+  height: auto;
+  border-radius: 30px;
+  font-weight: bold;
+  margin-top: 1%;
 }
 
 .functionLabel {
@@ -44,36 +108,3 @@
   border: none;
 }
 
-.missionsCard {
-  background-color: #0314af;
-  color: white;
-  padding: 20px;
-  border-radius: 30px;
-  margin-right: 10%;
-  margin-left: 10%;
-}
-
-.missionsCard input {
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-.inputText {
-  border: none;
-  border-bottom: 2px solid white;
-  outline: none;
-  min-width: 300px;
-  background: none;
-  color: white;
-}
-
-.buttonMissions {
-  width: 100%;
-  background-color: #fecc0d;
-  font-size: 16px;
-  color: #0314af;
-  height: auto;
-  border-radius: 30px;
-  font-weight: bold;
-  margin-top: 1%;
-}

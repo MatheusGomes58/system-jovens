@@ -1,7 +1,7 @@
 .slideshow-container {
     position: relative;
-    max-width: 800px; /* ajuste conforme necessário */
     margin: auto;
+    width: 100%;
 }
 
 .slide-container {
@@ -11,8 +11,8 @@
 
 .slideshow img {
     max-width: 100%;
-    height: auto;
     display: none;
+    height: 200px;
 }
 
 .slideshow img.active {
@@ -20,19 +20,29 @@
 }
 
 .prev, .next {
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
     cursor: pointer;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     width: auto;
     padding: 16px;
-    margin-top: -22px;
     color: white;
     font-weight: bold;
     font-size: 20px;
     transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
+    border-radius: 50%; 
     background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.prev {
+    left: 0;
+    margin-left: 10px;
+}
+
+.next {
+    right: 0;
+    margin-right: 10px;
 }
 
 .prev:hover, .next:hover {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../components/firebase/firebase';
 import Narrator from '../components/narrador/narrador';
-import '../css/homePage.css';
+import '../css/missionsPage.css';
 import alert from '../img/alerta.png';
 
 function MissionsPage() {
@@ -52,9 +52,9 @@ function MissionsPage() {
     }
 
     return (
-        <div className="homePage">
+        <div className="missionsPage">
             <Narrator textArray={mensager} />
-            <div className='containerHome'>
+            <div className='containerMissions'>
                 <img src={alert} className="Img" />
                 <h1 className='functionLabel'>Acesso Restrito</h1>
                 <button className='button' onClick={missionsListAcess}>

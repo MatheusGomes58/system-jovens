@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Members from '../components/members/members';
 import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../components/firebase/firebase';
-import '../css/homePage.css';
+import '../css/teamPage.css';
 import LogoJA from '../img/logo.png';
 
 function TeamPage() {
@@ -62,12 +62,12 @@ function TeamPage() {
     };
 
     return (
-        <div className="homePage">
-            <div className='containerHome'>
+        <div className="teamPage">
+            <div className='containerTeam'>
                 <img src={LogoJA} className='LogoJA' />
                 <h2 className='functionLabel'>Membros</h2>
             </div>
-            <div className='containerHome'>
+            <div className='containerTeam'>
                 <Members
                     users={!user.admin ? users.filter(user => user.status === true) : users}
                     isAdmin={user.admin}
