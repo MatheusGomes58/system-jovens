@@ -27,18 +27,13 @@
   object-fit: cover;
 }
 
-.profileCard {
+.missionsCard {
   background-color: #0314af;
   color: white;
   padding: 20px;
   border-radius: 30px;
   margin-right: 10%;
   margin-left: 10%;
-}
-
-.profileCard input {
-  width: 100%;
-  margin-bottom: 10px;
 }
 
 .inputText {

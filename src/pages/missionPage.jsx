@@ -7,8 +7,9 @@ import '../css/missionPage.css';
 
 function MissionDetailsPage() {
     const [mission, setMission] = useState(null);
-    const [report, setReport] = useState(null);
-    const [reportSubmitted, setReportSubmitted] = useState(true);
+    const [reportMission, setReportMission] = useState(null);
+    const [report, setReport] = useState('');
+    const [reportId, setReportId] = useState('');
     const [images, setImages] = useState([]);
     const navigate = useNavigate();
 
@@ -32,11 +33,9 @@ function MissionDetailsPage() {
             .onSnapshot(snapshot => {
                 if (!snapshot.empty) {
                     const reportData = snapshot.docs[0].data();
-                    setReport(reportData);
-                    setReportSubmitted(true);
-                } else {
-                    setReport(null);
-                    setReportSubmitted(false);
+                    setReport(reportData.status);
+                    setReportMission(reportData);
+                    setReportId(snapshot.docs[0].id);
                 }
             });
 
@@ -45,6 +44,40 @@ function MissionDetailsPage() {
             unsubscribeReport();
         };
     }, [navigate]);
+
+    const handleAcceptMission = async () => {
+        const confirmAccept = window.confirm('Tem certeza de que deseja aceitar esta missão?');
+
+        if (confirmAccept) {
+            try {
+                await db.collection('reports').add({
+                    email: localStorage.getItem('email'),
+                    missionId: localStorage.getItem('missionId'),
+                    status: 'in_progress'
+                });
+                setReport('in_progress');
+            } catch (error) {
+                console.error('Erro ao aceitar a missão:', error);
+            }
+        }
+    };
+
+    const handleRejectMission = async () => {
+        const confirmReject = window.confirm('Tem certeza de que deseja recusar esta missão?');
+
+        if (confirmReject) {
+            try {
+                await db.collection('reports').add({
+                    email: localStorage.getItem('email'),
+                    missionId: localStorage.getItem('missionId'),
+                    status: 'error'
+                });
+                setReport('error');
+            } catch (error) {
+                console.error('Erro ao recusar a missão:', error);
+            }
+        }
+    };
 
     const handleImageChange = (event) => {
         const files = event.target.files;
@@ -65,34 +98,23 @@ function MissionDetailsPage() {
             reader.readAsDataURL(file);
         }
     };
-
     const handleSubmitReport = async (reportData) => {
         const email = localStorage.getItem('email');
         const missionId = localStorage.getItem('missionId');
 
-        if (reportSubmitted) {
-            alert('O relatório já foi enviado.');
-            return;
-        }
-
-        const jsonReport = {
-            email: email,
-            missionId: missionId,
-            text: reportData,
-            status: 'completed',
-            images: []
-        };
-
         try {
             const imageUrls = await Promise.all(images.map(uploadImage));
-            jsonReport.images = imageUrls;
+            await db.collection('reports').doc(reportId).update({
+                text: reportData,
+                status: 'completed',
+                images: imageUrls
+            });
+            setReport('completed');
+            alert('Relatório atualizado com sucesso!');
 
-            await db.collection('reports').add(jsonReport);
-            setReportSubmitted(true);
-            alert('Relatório enviado com sucesso!');
         } catch (error) {
-            console.error('Erro ao enviar o relatório:', error);
-            alert('Ocorreu um erro ao enviar o relatório. Por favor, tente novamente.');
+            console.error('Erro ao enviar/atualizar o relatório:', error);
+            alert('Ocorreu um erro ao enviar/atualizar o relatório. Por favor, tente novamente.');
         }
     };
 
@@ -108,32 +130,39 @@ function MissionDetailsPage() {
         }
     };
 
-    if (!mission) {
-        return <div>Carregando...</div>;
-    }
-
     return (
         <div className="homePage">
             <div className='containerHome'>
-                <h1 className='functionLabel'>{mission.title}</h1>
-                <h3>{mission.description}</h3>
-                {mission.images && <Slides images={mission.images} />}
+                <h1 className='functionLabel'>Missão: {mission && mission.title}</h1>
+                <h3>{mission && mission.description}</h3>
+                {mission && mission.images && <Slides images={mission.images} />}
             </div>
 
-            {report && (
-                <div className='containerHome'>
-                    <h2>Relatório</h2>
-                    <p>{report.text}</p>
-                    <Slides images={report.images} />
+            {!report && report != 'error' && (
+                <div className='button-container'>
+                    <button className='accept' onClick={handleAcceptMission}>
+                        <i className="fas fa-check-circle"></i>
+                    </button>
+                    <button className='reject' onClick={handleRejectMission}>
+                        <i className="fas fa-times-circle text-danger"></i>
+                    </button>
                 </div>
             )}
 
-            {!report && (
+            {report === 'in_progress' && (
                 <div className='containerHome'>
                     <Slides images={images} />
                     <div className='missionsCard'>
                         <ReportForm onSubmit={handleSubmitReport} addImage={handleImageChange} />
                     </div>
+                </div>
+            )}
+
+            {report === 'completed' && (
+                <div className='containerHome'>
+                    <h1 className='functionLabel'>Relatório da Missão: {mission && mission.title}</h1>
+                    <p>{reportMission.text}</p>
+                    <Slides images={reportMission.images} />
                 </div>
             )}
         </div>

@@ -108,7 +108,7 @@ function MissionsListPage() {
                 <h2 className='functionLabel'>{user.function ? user.function : 'Cargo Indefinido'}</h2>
             </div>
             <div className='containerListMissions'>
-                <div className='missionCard'>
+                <div className='missionCards'>
                     <h2 className='missionCardHeader'>Missions</h2>
                     <div className='missionCardList'>
                         {missions.map(mission => (
