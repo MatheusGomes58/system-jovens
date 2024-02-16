@@ -86,7 +86,7 @@ function HomePage() {
                     <input className='inputText' type="text" placeholder="Idade:" value={user.age ? user.age : 'Idade Indefinida'} readOnly />
                     <input className='inputText' type="text" placeholder="Equipe:" value={user.team ? user.team : 'Time Indefinido'} readOnly />
                     <button className='buttonMissions' onClick={acessMissionsPage}>
-                        <h2>MINHAS MISSÕES</h2>
+                        MINHAS MISSÕES
                     </button>
                 </div>
             </div>

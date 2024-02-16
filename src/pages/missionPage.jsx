@@ -121,7 +121,7 @@ function MissionDetailsPage() {
     const uploadImage = async (imageData) => {
         try {
             const storageRef = storage.ref();
-            const imageRef = storageRef.child(`images/${Date.now()}`);
+            const imageRef = storageRef.child(`imagesReport/${Date.now()}`);
             const snapshot = await imageRef.putString(imageData, 'data_url');
             return await snapshot.ref.getDownloadURL();
         } catch (error) {
@@ -135,7 +135,7 @@ function MissionDetailsPage() {
             <div className='containerHome'>
                 <h1 className='functionLabel'>Missão: {mission && mission.title}</h1>
                 <h3>{mission && mission.description}</h3>
-                {mission && mission.images && <Slides images={mission.images} />}
+                {mission && mission.imageUrls && <Slides images={mission.imageUrls} />}
             </div>
 
             {!report && report != 'error' && (

@@ -15,12 +15,12 @@ const Slideshow = ({ images }) => {
     return (
         <div className="slideshow-container">
             <div className="slideshow">
+                <button className="prev" onClick={handlePrevSlide}>&#10094;</button>
                 <div className="slide-container">
                     {images && images.map((image, index) => (
                         <img className='img' key={index} src={image} alt={`Slide ${index}`} style={{ display: index === currentSlide ? 'block' : 'none' }} />
                     ))}
                 </div>
-                <button className="prev" onClick={handlePrevSlide}>&#10094;</button>
                 <button className="next" onClick={handleNextSlide}>&#10095;</button>
             </div>
         </div>

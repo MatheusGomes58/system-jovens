@@ -1,4 +1,4 @@
-.teamPage {
+.chatPage {
   width: 100vw;
   height: 100vh;
   background-color: black;
@@ -7,15 +7,10 @@
   align-items: center;
   flex-direction: column;
   margin-top: 5%;
-  margin-bottom: 15%;
+  margin-bottom: 20%;
 }
 
-.LogoJA {
-  width: 190px;
-  height: 190px;
-}
-
-.containerTeam {
+.containerChat {
   margin-right: 10%;
   margin-left: 10%;
   display: flex;
@@ -23,4 +18,9 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+}
+
+.LogoJA {
+  width: 270px;
+  height: 270px;
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Chat from '../components/chat/chat';
 import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../components/firebase/firebase';
-import '../css/homePage.css';
+import '../css/chatPage.css';
 import LogoJA from '../img/logo.png';
 
 function ChatPage() {
@@ -58,12 +58,12 @@ function ChatPage() {
     };
 
     return (
-        <div className="homePage">
-            <div className='containerHome'>
+        <div className="chatPage">
+            <div className='containerChat'>
                 <img src={LogoJA} className='LogoJA' />
                 <h2 className='functionLabel'>Membros</h2>
             </div>
-            <div className='containerHome'>
+            <div className='containerChat'>
                 <Chat
                     email={userEmail}
                     user={userChat}

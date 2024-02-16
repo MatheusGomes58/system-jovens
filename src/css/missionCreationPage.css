@@ -139,10 +139,12 @@
 
 .buttonMissions {
   width: 100%;
+  min-height: 40px;
+  border: none;
   background-color: #fecc0d;
   font-size: 16px;
   color: #0314af;
-  height: 40px;
+  height: auto;
   border-radius: 30px;
   font-weight: bold;
   margin-top: 1%;
