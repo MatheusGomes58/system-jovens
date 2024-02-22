@@ -7,7 +7,7 @@
   align-items: center;
   flex-direction: column;
   margin-top: 5%;
-  margin-bottom: 5%;
+  margin-bottom: 15%;
 }
 
 .containerProfile {
@@ -37,10 +37,12 @@
 }
 
 .inputText {
+  margin-top: 1%;
+  margin-bottom: 1%;
   border: none;
   border-bottom: 2px solid white;
   outline: none;
-  min-width: 300px;
+  width: 100%;
   background: none;
   color: white;
 }
@@ -60,7 +62,6 @@
   padding: 8px 0;
   font-size: 16px;
   appearance: none;
-  /* Remove o estilo padrão do select */
   background-color: #0314af;
 }
 
@@ -88,10 +89,14 @@
   margin-top: 1%;
 }
 
-.functionLabel {
+.inputFunction {
   width: 100%;
   color: #fecc0d;
   font-weight: bold;
+  background: none;
+  border: none;
+  margin-top: 1%;
+  margin-bottom: 2%;
 }
 
 .configButton {

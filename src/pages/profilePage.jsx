@@ -15,13 +15,16 @@ function ProfilePage() {
         status: false,
         leader: false,
         admin: false,
+        function: '',
+        adminMessage: '' // New state for admin message
     });
     const [teams, setTeams] = useState([]);
-    const [isLoading, setIsLoading] = useState(false); // Estado para controlar o carregamento
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         userValidation();
+        fetchAdminMessage();
         fetchTeams();
     }, []);
 
@@ -32,6 +35,21 @@ function ProfilePage() {
             setTeams(teamsList);
         } catch (error) {
             console.error('Erro ao recuperar times do Firestore:', error);
+        }
+    }
+
+    async function fetchAdminMessage() {
+        try {
+            const messageSnapshot = await db.collection('mensagers').where('mensager', '==', 'missionsListPage').get();
+            if (!messageSnapshot.empty) {
+                const messageData = messageSnapshot.docs[0].data();
+                setEditableFields(prevState => ({
+                    ...prevState,
+                    adminMessage: messageData.text || ''
+                }));
+            }
+        } catch (error) {
+            console.error('Erro ao recuperar mensagem do Firestore:', error);
         }
     }
 
@@ -75,11 +93,13 @@ function ProfilePage() {
                         email: userData.email || '',
                         status: userData.status || false,
                         leader: userData.leader || false,
-                        admin: userData.admin || false
+                        admin: userData.admin || false,
+                        function: userData.function || ''
                     });
                 });
             }
         } catch (error) {
+            console.error('Erro ao recuperar informações do usuário do Firestore:', error);
         }
     }
 
@@ -93,7 +113,7 @@ function ProfilePage() {
     const handleFileChange = async (event) => {
         const file = event.target.files[0];
         if (file) {
-            setIsLoading(true); // Ativa o estado de carregamento
+            setIsLoading(true);
             const storageRef = storage.ref();
             const fileRef = storageRef.child(`users/${file.name}`);
             await fileRef.put(file);
@@ -101,8 +121,7 @@ function ProfilePage() {
             await db.collection('users').doc(user.id).update({
                 img: fileUrl
             });
-            setIsLoading(false); // Desativa o estado de carregamento após o upload
-            // Atualizar automaticamente a imagem após o upload
+            setIsLoading(false);
             setUser(prevUser => ({
                 ...prevUser,
                 img: fileUrl
@@ -118,16 +137,29 @@ function ProfilePage() {
                 team: editableFields.team,
                 status: editableFields.status,
                 leader: editableFields.leader,
-                admin: editableFields.admin
+                admin: editableFields.admin,
+                function: editableFields.function
             });
             console.log('Informações do usuário atualizadas com sucesso.');
+
+            if (admin) {
+                await db.collection('mensagers').where('mensager', '==', 'missionsListPage').get()
+                    .then(querySnapshot => {
+                        querySnapshot.forEach(doc => {
+                            doc.ref.update({
+                                text: editableFields.adminMessage
+                            });
+                        });
+                    });
+            }
 
             localStorage.removeItem('editUser');
             navigate(-1);
         } catch (error) {
-            console.error('Erro ao atualizar informações do usuário no Firestore:', error);
+            console.error('Erro ao atualizar informações do usuário ou mensagem do administrador:', error);
         }
     };
+
 
     return (
         <div className="ProfilePage">
@@ -139,8 +171,14 @@ function ProfilePage() {
                     </button>
                 </div>
                 {isLoading && <div className="loadingOverlay">Carregando...</div>}
-                <h2 className='functionLabel'>{user.function ? user.function : 'Cargo Indefinido'}</h2>
-
+                <input
+                    className='inputFunction'
+                    type="text"
+                    placeholder="Cargo:"
+                    value={editableFields.function}
+                    onChange={(e) => setEditableFields({ ...editableFields, function: e.target.value })}
+                    readOnly={!admin}
+                />
                 <input id="fileInput" type="file" onChange={handleFileChange} style={{ display: 'none' }} />
             </div>
             <div className='containerProfile'>
@@ -166,6 +204,15 @@ function ProfilePage() {
                         value={editableFields.age}
                         onChange={(e) => setEditableFields({ ...editableFields, age: e.target.value })}
                     />
+                    {admin && (
+                        <input
+                            className='inputText'
+                            type="text"
+                            placeholder="Protocolo:"
+                            value={editableFields.adminMessage}
+                            onChange={(e) => setEditableFields({ ...editableFields, adminMessage: e.target.value })}
+                        />
+                    )}
                     <div className='selectContainer'>
                         <select
                             value={editableFields.team}
@@ -201,7 +248,6 @@ function ProfilePage() {
                             />
                         </div>
                     )}
-
                     <button className='buttonMissions' onClick={handleEditButtonClick} disabled={isLoading}>
                         <h2>Editar</h2>
                     </button>

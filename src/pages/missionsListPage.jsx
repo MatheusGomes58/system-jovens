@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../components/firebase/firebase';
 import Narrator from '../components/narrador/narrador';
+import LevelProgressBar from '../components/progressbar/progressBar';
 import '../css/missionsListPage.css';
 import LogoJA from '../img/userUnknow.png';
 
@@ -17,7 +18,8 @@ function MissionsListPage() {
     }, []);
 
     async function getMensagerFromFirestore() {
-        db.collection('mensagers').where('mensager', '==', 'missionsListPage')
+        db.collection('mensagers')
+            .where('mensager', '==', 'missionsListPage')
             .onSnapshot(snapshot => {
                 if (!snapshot.empty) {
                     const mensagerData = snapshot.docs[0].data();
@@ -62,7 +64,6 @@ function MissionsListPage() {
                 });
         }
 
-
         const unsubscribeUser = getUserFromFirestore();
         const unsubscribeMissions = getMissionsFromFirestore();
 
@@ -71,7 +72,6 @@ function MissionsListPage() {
             unsubscribeMissions();
         };
     }, []);
-
 
     async function userValidation() {
         const authTime = localStorage.getItem('authTime');
@@ -99,6 +99,18 @@ function MissionsListPage() {
         navigate('/mission');
     }
 
+    function calculateLevel() {
+        const missionsConcluded = user.missionsConcluded ? user.missionsConcluded : 0;
+        let userLevel = 0;
+
+        if (missionsConcluded >= 2) {
+            userLevel = Math.floor(Math.log2(missionsConcluded / 2)) + 1;
+        }
+
+        return userLevel;
+    }
+
+
     return (
         <div className="missionsListPage">
             <div className='containerListMissions'>
@@ -109,7 +121,10 @@ function MissionsListPage() {
             </div>
             <div className='containerListMissions'>
                 <div className='missionCards'>
-                    <h2 className='missionCardHeader'>Missions</h2>
+                    <div className='missionCardHeader' >
+                        <h2>Agente Nivel: {calculateLevel()}</h2>
+                        <LevelProgressBar user={user} />
+                    </div>
                     <div className='missionCardList'>
                         {missions.map(mission => (
                             <div key={mission.id} className="missionCardBody" onClick={() => handleMissionClick(mission.id)}>
@@ -126,7 +141,7 @@ function MissionsListPage() {
                             </div>
                         ))}
                     </div>
-                    <h2 className='missionCardFooter'>Missions</h2>
+                    <h2 className='missionCardFooter'>{mensager ? mensager : 'Protocolo Indefinido'}</h2>
                 </div>
             </div>
         </div>

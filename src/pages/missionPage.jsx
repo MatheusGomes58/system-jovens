@@ -98,10 +98,12 @@ function MissionDetailsPage() {
             reader.readAsDataURL(file);
         }
     };
+
+
     const handleSubmitReport = async (reportData) => {
         const email = localStorage.getItem('email');
         const missionId = localStorage.getItem('missionId');
-
+    
         try {
             const imageUrls = await Promise.all(images.map(uploadImage));
             await db.collection('reports').doc(reportId).update({
@@ -109,14 +111,34 @@ function MissionDetailsPage() {
                 status: 'completed',
                 images: imageUrls
             });
+    
+            const userRef = db.collection('users').where('email', '==', email).limit(1);
+            const userSnapshot = await userRef.get(); // Obtenha o snapshot diretamente
+    
+            let missionsConcluded = 1;
+    
+            if (!userSnapshot.empty) {
+                const userData = userSnapshot.docs[0].data();
+                missionsConcluded = userData.missionsConcluded || 0;
+                missionsConcluded++;
+                const userId = userSnapshot.docs[0].id; 
+    
+                await db.collection('users').doc(userId).update({
+                    missionsConcluded: missionsConcluded
+                });
+            }
+    
             setReport('completed');
             alert('Relatório atualizado com sucesso!');
-
+    
         } catch (error) {
             console.error('Erro ao enviar/atualizar o relatório:', error);
             alert('Ocorreu um erro ao enviar/atualizar o relatório. Por favor, tente novamente.');
         }
     };
+    
+
+
 
     const uploadImage = async (imageData) => {
         try {
